@@ -167,4 +167,5 @@ def unfollow(username):
 @app.route('/rooms')
 @login_required
 def rooms():
-    return redirect(url_for('index'))
+    rooms = current_user.user_rooms()
+    return render_template('rooms.html', rooms = rooms)

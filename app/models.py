@@ -12,8 +12,8 @@ followers = db.Table('followers',
 )
 
 # USER <-> ROOM RELATIONSHIP
-rooms = db.Table('members',
-    db.Column('member_id', db.Integer, db.ForeignKey('user.id')),
+members = db.Table('members', db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('room_id', db.String(8), db.ForeignKey('room.id'))
 )
 # POST <-> USER RELATIONSHIP
@@ -33,9 +33,7 @@ class User(UserMixin, db.Model):
         secondaryjoin = (followers.c.followed_id == id),
         backref = db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
-    members = db.relationship(
-        'Room', secondary = members,
-        backref = db.backref('members', lazy='select'), lazy='dynamic')
+    rooms = db.relationship('Room', secondary=members)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -65,22 +63,26 @@ class User(UserMixin, db.Model):
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
 
-    def is_member(self, room):
-        return self.rooms.filter(rooms.c.room_id).count() > 0
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
 
-    def user_rooms(self):
-        return self.rooms.filter(self.id == members.member_id)
 
     def join_room(self, room):
         if not self.is_member(room):
-            self.rooms.append(self)
+            self.rooms.append(room)
 
     def leave_room(self, room):
         if self.is_member(room):
-            self.rooms.remove(self)
+            self.rooms.remove(room)
 
-    def __repr__(self):
-        return '<User {}>'.format(self.username)
+    def user_rooms(self):
+        return self.rooms
+
+    def is_member(self, room):
+        for x in range(len(self.rooms)):
+            if self.rooms[x].id == room.id:
+                return True            
+        return False
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -94,6 +96,8 @@ class Post(db.Model):
 # TO IMPLEMENT
 class Room(db.Model):
     id = db.Column(db.String(8), primary_key=True)
+    name = db.Column(db.String(40), unique=True)
+    desc = db.Column(db.String(250))
     # https://stackoverflow.com/questions/13484726/safe-enough-8-character-short-unique-random-string
 
     def new_room(self):
@@ -101,6 +105,13 @@ class Room(db.Model):
         code = str(uuid4())[:8]
         self.id = code
     
+    def set_name(self, name):
+        self.name = name
+
+    def set_desc(self, desc):
+        self.desc = desc
+
+
     def __repr__(self):
         return '<Room {}>'.format(self.id)
 

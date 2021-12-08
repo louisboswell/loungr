@@ -2,5 +2,15 @@
 
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
-    <h1>This page doesn't exist yet</h1>
+
+    {% for room in rooms %}
+    <div>
+        <h1>
+            {{ room.name }}
+        </h1>
+        <h1>
+            {{ room.description }}
+        </h1>
+    </div>
+    {% endfor %}
 {% endblock %}
