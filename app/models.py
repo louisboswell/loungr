@@ -12,7 +12,7 @@ followers = db.Table('followers',
 )
 
 # USER <-> ROOM RELATIONSHIP
-members = db.Table('members',
+rooms = db.Table('members',
     db.Column('member_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('room_id', db.String(8), db.ForeignKey('room.id'))
 )
@@ -33,10 +33,8 @@ class User(UserMixin, db.Model):
         secondaryjoin = (followers.c.followed_id == id),
         backref = db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
-    member = db.relationship(
-        'User', secondary = members,
-        primaryjoin = (members.c.member_id == id),
-        secondaryjoin = (members.c.room_id == id),
+    members = db.relationship(
+        'Room', secondary = members,
         backref = db.backref('members', lazy='select'), lazy='dynamic')
 
     def set_password(self, password):
@@ -68,18 +66,18 @@ class User(UserMixin, db.Model):
         return followed.union(own).order_by(Post.timestamp.desc())
 
     def is_member(self, room):
-        return self.member.filter(members.c.room_id).count() > 0
+        return self.rooms.filter(rooms.c.room_id).count() > 0
 
     def user_rooms(self):
-        return self.members.filter(self.id == members.member_id)
+        return self.rooms.filter(self.id == members.member_id)
 
     def join_room(self, room):
         if not self.is_member(room):
-            self.member.append(self)
+            self.rooms.append(self)
 
     def leave_room(self, room):
         if self.is_member(room):
-            self.member.remove(self)
+            self.rooms.remove(self)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
