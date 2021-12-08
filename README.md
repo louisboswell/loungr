@@ -8,11 +8,11 @@
 - Profile picture upload
 - Profile picture storage
 - Profile picture displayed
-- Room db table
-- Room - User Relationship
+- Room db table X
+- Room - User Relationship X
 - Room - Post Relationship
-- Room invite code link (use routing ie ./room/<invite code>)
-- Room viewer
+- Room invite code link (use routing ie ./room/<invite code>) 
+- Room viewer 
 - Username search bar
 - Add icons from bootstrap
 - Research mobile usage and changing sizes
