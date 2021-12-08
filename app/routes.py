@@ -185,3 +185,9 @@ def createroom():
         return redirect(url_for('rooms'))
 
     return render_template('createroom.html', form=form, title = 'Create Room')
+
+@app.route('/join/<id>', methods=['GET', 'POST'])
+@login_required
+def join(id):
+    current_user.join_room(id)
+    return redirect(url_for('rooms'))

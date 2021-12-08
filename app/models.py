@@ -68,21 +68,16 @@ class User(UserMixin, db.Model):
 
 
     def join_room(self, room):
-        if not self.is_member(room):
+        if room not in self.rooms:
             self.rooms.append(room)
 
     def leave_room(self, room):
-        if self.is_member(room):
+        if room in self.rooms:
             self.rooms.remove(room)
 
     def user_rooms(self):
         return self.rooms
 
-    def is_member(self, room):
-        for x in range(len(self.rooms)):
-            if self.rooms[x].id == room.id:
-                return True            
-        return False
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
