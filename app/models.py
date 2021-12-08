@@ -12,6 +12,10 @@ followers = db.Table('followers',
 )
 
 # USER <-> ROOM RELATIONSHIP
+members = db.Table('members',
+    db.Column('member_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('room_id', db.String(8), db.ForeignKey('room.id'))
+)
 # POST <-> USER RELATIONSHIP
 
 class User(UserMixin, db.Model):
@@ -28,6 +32,12 @@ class User(UserMixin, db.Model):
         primaryjoin = (followers.c.follower_id == id),
         secondaryjoin = (followers.c.followed_id == id),
         backref = db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
+    member = db.relationship(
+        'User', secondary = members,
+        primaryjoin = (members.c.member_id == id),
+        secondaryjoin = (members.c.room_id == id),
+        backref = db.backref('members', lazy='select'), lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -57,7 +67,19 @@ class User(UserMixin, db.Model):
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
 
+    def is_member(self, room):
+        return self.member.filter(members.c.room_id).count() > 0
 
+    def user_rooms(self):
+        return self.members.filter(self.id == members.member_id)
+
+    def join_room(self, room):
+        if not self.is_member(room):
+            self.member.append(self)
+
+    def leave_room(self, room):
+        if self.is_member(room):
+            self.member.remove(self)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -79,11 +101,10 @@ class Room(db.Model):
     def new_room(self):
         # Generate short room code
         code = str(uuid4())[:8]
-        # While the short code has a collision
-        while Room.query.filter_by(id = code) is not None:
-            # Generate new room uuid
-            code = str(uuid4())[:8]
         self.id = code
+    
+    def __repr__(self):
+        return '<Room {}>'.format(self.id)
 
 
 
