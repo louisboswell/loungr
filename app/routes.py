@@ -163,3 +163,8 @@ def unfollow(username):
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
+@app.route('/rooms')
+@login_required
+def rooms():
+    return redirect(url_for('index'))
