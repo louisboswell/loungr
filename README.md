@@ -11,3 +11,6 @@
 - Room db table
 - Room - User Relationship
 - Room - Post Relationship
+- Room invite code link (use routing ie ./room/<invite code>)
+- Room viewer
+- Username search bar
