@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from flask_login import UserMixin
 from hashlib import md5
+from uuid import uuid4
 
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -72,9 +73,18 @@ class Post(db.Model):
 
 # TO IMPLEMENT
 class Room(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(8), unique=True)
+    id = db.Column(db.String(8), primary_key=True)
     # https://stackoverflow.com/questions/13484726/safe-enough-8-character-short-unique-random-string
+
+    def new_room(self):
+        # Generate short room code
+        code = str(uuid4())[:8]
+        # While the short code has a collision
+        while Room.query.filter_by(id = code) is not None:
+            # Generate new room uuid
+            code = str(uuid4())[:8]
+        self.id = code
+
 
 
 @login.user_loader
