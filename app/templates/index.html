@@ -12,7 +12,7 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>{{ form.submit() }}</p>
+        <p class="btn btn-primary">{{ form.submit() }}</p>
     </form>
     {% endif %}
     {% for post in posts %}
@@ -20,9 +20,9 @@
     {% endfor %}
 
     {% if prev_url %}
-    <a href="{{ prev_url }}">Newer posts</a>
+    <a class="btn btn-primary" href="{{ prev_url }}">Newer posts</a>
     {% endif %}
     {% if next_url %}
-    <a href="{{ next_url }}">Older posts</a>
+    <a class="btn btn-primary"href="{{ next_url }}">Older posts</a>
     {% endif %}
 {% endblock %}
