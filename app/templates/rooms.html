@@ -3,14 +3,15 @@
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
 
+    <p ><a class="btn btn-primary" href="{{ url_for('createroom') }}">Create New Room</a></p>
     {% for room in rooms %}
     <div>
         <h1>
             {{ room.name }}
         </h1>
-        <h1>
-            {{ room.description }}
-        </h1>
+        <h2>
+            {{ room.desc }}
+        </h2>
     </div>
     {% endfor %}
 {% endblock %}

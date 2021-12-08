@@ -1,9 +1,9 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask.ctx import copy_current_request_context
 from app import app, db
-from app.forms import LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm
+from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm
 from flask_login import current_user, login_user, login_required, logout_user
-from app.models import Post, User
+from app.models import Post, User, Room
 from werkzeug.urls import url_parse
 from datetime import datetime
 
@@ -169,3 +169,19 @@ def unfollow(username):
 def rooms():
     rooms = current_user.user_rooms()
     return render_template('rooms.html', rooms = rooms)
+
+@app.route('/createroom', methods = ['GET', 'POST'])
+@login_required
+def createroom():
+    form = CreateRoomForm()
+    if form.validate_on_submit():
+
+        temp = Room()
+        temp.new_room(current_user)
+        temp.set_name(form.name.data)
+        temp.set_desc(form.desc.data)
+        db.session.commit()
+        flash('{} has been created.'.format(form.name.data))
+        return redirect(url_for('rooms'))
+
+    return render_template('createroom.html', form=form, title = 'Create Room')

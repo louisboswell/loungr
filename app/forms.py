@@ -1,6 +1,8 @@
 from typing import Text
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import validators
+from wtforms.fields.simple import TextField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from app.models import User
 
@@ -46,6 +48,11 @@ class EditProfileForm(FlaskForm):
 class PostForm(FlaskForm):
     post = TextAreaField('Post Caption', validators=[DataRequired(), Length(min=1, max=140)])
     submit = SubmitField('Submit')
+
+class CreateRoomForm(FlaskForm):
+    name = TextField('Room Name', validators=[DataRequired(), Length(min=1, max=40)])
+    desc = TextAreaField('Room Description', validators=[DataRequired(), Length(min=1, max=250)])
+    submit = SubmitField('Create Room')
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
