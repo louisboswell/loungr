@@ -14,3 +14,5 @@
 - Room invite code link (use routing ie ./room/<invite code>)
 - Room viewer
 - Username search bar
+- Add icons from bootstrap
+- Research mobile usage and changing sizes

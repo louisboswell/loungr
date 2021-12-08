@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import unique
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 from flask_login import UserMixin
@@ -8,6 +9,9 @@ followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
+
+# USER <-> ROOM RELATIONSHIP
+# POST <-> USER RELATIONSHIP
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,6 +69,13 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+# TO IMPLEMENT
+class Room(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(8), unique=True)
+    # https://stackoverflow.com/questions/13484726/safe-enough-8-character-short-unique-random-string
+
 
 @login.user_loader
 def load_user(id):
