@@ -87,6 +87,9 @@ def register():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+
+    following = user.following()
+
     page = request.args.get('page', 1, type=int)
     posts = user.posts.order_by(Post.timestamp.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
@@ -96,7 +99,7 @@ def user(username):
         if posts.has_prev else None
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts.items,
-                           next_url=next_url, prev_url=prev_url, form=form)
+                           next_url=next_url, prev_url=prev_url, form=form, following=following)
 
 @app.before_request
 def before_request():

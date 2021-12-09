@@ -53,6 +53,21 @@ class User(UserMixin, db.Model):
         if self.is_following(user):
             self.followed.remove(user)
 
+    def following(self):
+        return self.followed.count()
+
+    """
+    def followers(self):
+        followers = []
+
+        for user in User.query.all():
+            if user.is_following(self):
+                followers.append(user)
+
+        return len(followers)
+    """
+
+
     def is_following(self, user):
         return self.followed.filter(followers.c.followed_id).count() > 0
 

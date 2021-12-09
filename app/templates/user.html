@@ -10,6 +10,8 @@
                 <p>{{ user.about_me }}</p>
             {% endif %}
 
+            <p>Following {{ following }}</p>
+
             {% if user.last_seen %}
                 <p>Last seen on: {{ user.last_seen }}</p>
             {% endif %}
