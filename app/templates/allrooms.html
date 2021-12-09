@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    <p>There are {{no_rooms}} rooms on loungr!</p>
+    <p><a class="btn btn-primary" href="{{url_for('createroom')}}">Create room</a></p>
+    <p><a class="btn btn-primary" href="{{url_for('rooms')}}">View your rooms</a></p>
+    {% for room in rooms %}
+    {% include '_room.html' %}
+    {% endfor %}
+{% endblock %}
