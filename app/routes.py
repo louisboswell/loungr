@@ -1,5 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask.ctx import copy_current_request_context
+from flask_sqlalchemy import model
 from app import app, db
 from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm
 from flask_login import current_user, login_user, login_required, logout_user
@@ -168,7 +169,8 @@ def unfollow(username):
 @login_required
 def rooms():
     rooms = current_user.user_rooms()
-    return render_template('rooms.html', rooms = rooms)
+    no_rooms = len(rooms)
+    return render_template('rooms.html', rooms = rooms, no_rooms = no_rooms)
 
 @app.route('/createroom', methods = ['GET', 'POST'])
 @login_required
@@ -189,5 +191,24 @@ def createroom():
 @app.route('/join/<id>', methods=['GET', 'POST'])
 @login_required
 def join(id):
-    current_user.join_room(id)
+    room = Room.query.filter_by(id = id).first()
+    current_user.join_room(room)
+    db.session.commit()
     return redirect(url_for('rooms'))
+
+@app.route('/leave/<id>', methods=['GET', 'POST'])
+@login_required
+def leave(id):
+    room = Room.query.filter_by(id = id).first()
+    current_user.leave_room(room)
+    db.session.commit()
+    return redirect(url_for('rooms'))
+
+@app.route('/rooms/all', methods=['GET', 'POST'])
+@login_required
+def allrooms():
+    rooms = Room.query.all()
+    no_rooms = len(rooms)
+
+    no_user_rooms = len(current_user.user_rooms())
+    return render_template('allrooms.html', rooms = rooms, no_rooms= no_rooms, no_user_rooms=no_user_rooms)

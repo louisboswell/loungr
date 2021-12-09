@@ -2,7 +2,8 @@
 
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
-    <p><a class="btn btn-primary" href="url_for('createroom')">Create room</a></p>
+    <p>You are a member of {{no_rooms}} rooms!</p>
+    <p><a class="btn btn-primary" href="{{url_for('createroom')}}">Create room</a></p>
     {% for room in rooms %}
     {% include '_room.html' %}
     {% endfor %}
