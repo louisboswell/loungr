@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container-fluid">
+        <div class="row">
+            <div style="margin-left: 10px"></div>
+                <div class="col-md-3 p-3 my-3 bg-dark text-white" style="border-radius: 15px; height:300px">
+
     <h1>Hi, {{ current_user.username }}!</h1>
     {% if form %}
     <form action="" method="post">
@@ -12,17 +17,24 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p class="btn btn-primary">{{ form.submit() }}</p>
+        <input type="submit" class="btn btn-primary" value="Post"></input>
     </form>
+                </div>
+                <div class="col-lg" style="height: 500px">
     {% endif %}
     {% for post in posts %}
         {% include '_post.html' %}
     {% endfor %}
-
+    </div>
+        </div>
+        <div class = "d-flex justify-content-center">
     {% if prev_url %}
     <a class="btn btn-primary" href="{{ prev_url }}">Newer posts</a>
     {% endif %}
     {% if next_url %}
+    <div style="width: 10px"></div>
     <a class="btn btn-primary"href="{{ next_url }}">Older posts</a>
     {% endif %}
+    </div>
+    </div>
 {% endblock %}

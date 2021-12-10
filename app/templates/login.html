@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class = "d-flex justify-content-center">
+<div class="p-3 my-3 bg-dark text-white" style="border-radius: 15px">
     <h1>Sign In</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
-            {{ form.username.label }}<br>
             {{ form.username(size=32) }}
             {% for error in form.username.errors %}
             <br>
@@ -13,7 +14,6 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.password.label }}<br>
             {{ form.password(size=32) }}
             {% for error in form.password.errors %}
             <br>
@@ -22,6 +22,8 @@
         </p>
         <a href="{{ url_for('register') }}">Register</a>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
+        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Sign In"></input>
     </form>
+    </div>
+    </div>
 {% endblock %}
