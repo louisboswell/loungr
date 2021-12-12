@@ -78,6 +78,11 @@ def register():
         user = User(username = form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
+
+        # Fixed error following user 1 afaik???
+        for x in user.followed:
+            user.followed.remove(x)
+
         db.session.commit()
 
         return redirect(url_for('login'))
