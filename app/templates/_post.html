@@ -1,11 +1,11 @@
-<div class="container p-3 my-3 bg-dark text-white" style="border-radius: 15px">
+<div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
     <table>
         <tr valign="top">
-            <td><img style="border-radius: 25px" src="{{ post.author.avatar(60) }}"></td>
+            <td><img class= "border border-white"style="border-radius: 25px" src="{{ post.author.avatar(60) }}"></td>
             <td>
                 <div style="padding-left: 10px;">
-                <a href="{{ url_for('user', username=post.author.username) }}">
-                    {{ post.author.username }}
+                <a class = "text-white bg-primary p-1" style="border-radius: 3px;" href="{{ url_for('user', username=post.author.username) }}">
+                    @{{ post.author.username }}
                 </a>
                 <br>
                 <p>{{ post.body }}</p>
