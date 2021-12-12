@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid text-center">    
+<div class="container-fluid text-center bg-secondary">    
         <div class="row content">
                 {% if form %}
           <div class="col-sm-2 p-2 my-3 text-white" style="border-radius: 15px; height: 285px">
             <div class = "container-fluid p-3 bg-dark text-white" style="border-radius: 15px;">
-            <h2>Hi, {{ current_user.username }}!</h1>
+            <b>Hi, {{ current_user.username }}!</b>
               <form action="" method="post">
                   {{ form.hidden_tag() }}
                   <p>
@@ -29,7 +29,7 @@
               {% include '_post.html' %}
           {% endfor %}
     
-          <footer class="container-fluid text-center bg-white">
+          <footer class="container-fluid text-center bg-secondary">
               {% if prev_url %}
               <a class="btn btn-primary" href="{{ prev_url }}">Newer posts</a>
               {% endif %}
@@ -38,8 +38,16 @@
               {% endif %}
             </footer>
           </div>
-          <div class="col-sm-2 p-2 my-3 bg-dark text-white" style="border-radius: 15px">
-            <h1>Your Rooms</h1>
+          <div class="col-sm-2 p-2 my-3 text-white" style="border-radius: 15px; height: 285px">
+            <div class = "container-fluid p-3 bg-dark text-white" style="border-radius: 15px;">
+            <b>Your Rooms</b>
+            {% for room in rooms %}
+              <div class="container-fluid bg-light text-dark" style="border-radius:5px">
+                <b>{{ room.name }}</b><br>
+                <p>{{ room.desc }}</p>
+              </div>
+            {% endfor %}
+            </div>
           </div>
         </div>
       </div>
