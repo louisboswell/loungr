@@ -10,7 +10,7 @@
     <p><a class="btn btn-primary" href="{{url_for('rooms')}}">View your rooms</a></p>
 </div>
 
-    {% for room in rooms %}
+    {% for room in all_rooms %}
     {% include '_room.html' %}
     {% endfor %}
 {% endblock %}

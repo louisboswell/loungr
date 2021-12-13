@@ -5,8 +5,12 @@
                     {{ room.name }}
                 </a>
                 <br>{{ room.desc }}
+                
+                {% if room not in rooms %}
                 <p><a class="btn btn-primary" href="/join/{{room.id}}">Join room</a></p>
+                {% else %}
                 <p><a class="btn btn-danger" href="/leave/{{room.id}}">Leave room</a></p>
+                {% endif %}
             </td>
         </tr>
     </table>

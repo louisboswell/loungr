@@ -5,8 +5,11 @@
         <h1 style= "font-weight: bold;">{{room.name}}</h1>
         <h1>{{room.desc}}</h1>
 
+        {% if room not in user.user_rooms() %}
         <p><a class="btn btn-primary" href="/join/{{room.id}}">Join room</a></p>
+        {% else %}
         <p><a class="btn btn-danger" href="/leave/{{room.id}}">Leave room</a></p>
+        {% endif %}
         {% if user.id == room.admin %}
         <p><a class="btn btn-danger" href="/deleteroom/{{room.id}}">Delete room</a></p>
         {% endif %}

@@ -245,8 +245,9 @@ def leave(id):
 @app.route('/rooms/all', methods=['GET', 'POST'])
 @login_required
 def allrooms():
-    rooms = Room.query.all()
-    no_rooms = len(rooms)
+    all_rooms = Room.query.all()
+    no_rooms = len(all_rooms)
 
     no_user_rooms = len(current_user.user_rooms())
-    return render_template('allrooms.html', rooms = rooms, no_rooms= no_rooms, no_user_rooms=no_user_rooms)
+    rooms = current_user.user_rooms()
+    return render_template('allrooms.html', rooms = rooms, no_rooms= no_rooms, no_user_rooms=no_user_rooms, all_rooms =all_rooms)
