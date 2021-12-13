@@ -114,7 +114,27 @@ def room(id):
     room = Room.query.filter_by(id=id).first_or_404()
     members = room.get_members()
 
-    return render_template('room.html', room=room, members=members)
+    return render_template('room.html', room=room, members=members, user=current_user)
+
+@app.route('/deleteroom/<id>')
+@login_required
+def deleteroom(id):
+    room = Room.query.filter_by(id=id).first()
+
+    if room is None:
+        return redirect(url_for('rooms'))
+
+    form = EmptyForm()
+
+    if room.admin != current_user.id:
+        return redirect(url_for('rooms'))
+
+    if form.validate_on_submit:
+        db.session.delete(room)
+        db.session.commit()
+
+
+    return render_template('deleteroom.html', room=room, form=form)
 
 @app.before_request
 def before_request():

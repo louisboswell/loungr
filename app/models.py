@@ -116,6 +116,7 @@ class Room(db.Model):
     id = db.Column(db.String(8), primary_key=True)
     name = db.Column(db.String(40), unique=True)
     desc = db.Column(db.String(250))
+    admin = db.Column(db.Integer)
     # https://stackoverflow.com/questions/13484726/safe-enough-8-character-short-unique-random-string
 
     def new_room(self, user):
@@ -123,12 +124,14 @@ class Room(db.Model):
         code = str(uuid4())[:8]
         self.id = code
         user.join_room(self)
+        self.admin = user.id
     
     def set_name(self, name):
         self.name = name
 
     def set_desc(self, desc):
         self.desc = desc
+
 
     def get_members(self):
         users = User.query.all()

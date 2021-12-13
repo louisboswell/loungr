@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container p-3 my-3 bg-dark text-white" style="margin:auto">
+<div class="container p-3 my-3 bg-dark text-white" style="margin:auto; border-radius: 15px;">
     <h1>Oops. This page doesn't exist yet.</h1>
-    <p ><a class="btn btn-primary" href="{{ url_for('index') }}">Return</a></p>
+    <br>
+    <p style="margin: auto" ><a class="btn btn-primary btn-large" {{ url_for('index') }}">Return</a></p>
 </div>
 {% endblock %}
