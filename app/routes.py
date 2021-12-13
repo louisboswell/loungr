@@ -108,6 +108,13 @@ def user(username):
     return render_template('user.html', user=user, posts=posts.items,
                            next_url=next_url, prev_url=prev_url, form=form, following=following,followers=followers, rooms = rooms)
 
+@app.route('/room/<id>')
+@login_required
+def room(id):
+    room = Room.query.filter_by(id=id).first_or_404()
+
+    return render_template('room.html', room=room)
+
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
