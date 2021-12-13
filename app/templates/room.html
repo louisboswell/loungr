@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
+        <h1 style= "font-weight: bold;">{{room.name}}</h1>
+        <h1>{{room.desc}}</h1>
+
+        <p><a class="btn btn-primary" href="/join/{{room.id}}">Join room</a></p>
+        <p><a class="btn btn-danger" href="/leave/{{room.id}}">Leave room</a></p>
+    </div>
+{% endblock %}

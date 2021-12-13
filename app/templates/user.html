@@ -1,26 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <table>
-        <tr valign="top">
-            <td><img src="{{ user.avatar(128) }}"></td>
-            <td><h1>User: {{ user.username }}</h1></td>
+
+<div class="container p-3 my-3 text-white border-0" style="border-radius: 15px">
+
+    <div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
+        <h1 style="font-weight: bold;">@{{ user.username }}</h1><br>
+        <div class="row">
+            <div class="col">
+                <img class= "border border-white"style="border-radius: 25px" src="{{ user.avatar(110) }}">
+
+            </div>
+
+            <div class="col main-box-layout">
+                <div class="box-layout-text text-right bg-light p-3 text-dark" style= "border-radius: 10px;">
+                    <h1>{{ following}}</h1>
+                <span>Following</span>
+                </div>
+            </div>
+    
+            <div class="col main-box-layout">
+                <div class="box-layout-text text-right bg-light p-3 text-dark" style= "border-radius: 10px;">
+                    <h1>{{ followers}}</h1>
+                <span>Followers</span>
+                </div>
+            </div>
+    
+            <div class="col main-box-layout">
+                <div class="box-layout-text text-right bg-light p-3  text-dark" style= "border-radius: 10px;">
+                    <h1>{{ rooms }}</h1>
+                <span>Rooms</span>
+                </div>
+            </div>
+        </div>
+        <br>
 
             {% if user.about_me %}
                 <p>{{ user.about_me }}</p>
             {% endif %}
 
-            <p>Following {{ following }}</p>
-            <p>Followers {{ followers }}</p>
-            <p>Rooms {{ rooms}}</p>
-
+        <!--
             {% if user.last_seen %}
                 <p>Last seen on: {{ user.last_seen }}</p>
             {% endif %}
-        </tr>
-    </table>
+            !-->
     {% if user == current_user %}
     <p><a class="btn btn-primary" href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+    </div>
     {% elif not current_user.is_following(user) %}
     <p>
         <form class="btn btn-primary" action="{{ url_for('follow', username=user.username) }}" method="post">
@@ -28,6 +54,7 @@
             {{ form.submit(value='Follow') }}
         </form>
     </p>
+    </div>
     {% else %}
     <p>
         <form class="btn btn-primary" action="{{ url_for('unfollow', username=user.username) }}" method="post">
@@ -35,6 +62,8 @@
             {{ form.submit(value='Unfollow') }}
         </form>
     </p>
+    </div>
+</div>
     {% endif %}
     {% for post in posts %}
         {% include '_post.html' %}

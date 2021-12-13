@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
     <h1>Create Room</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
@@ -20,4 +21,5 @@
         </p>
         <p class="btn btn-primary">{{ form.submit() }}</p>
     </form>
+</div>
 {% endblock %}
