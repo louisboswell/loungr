@@ -2,8 +2,9 @@ from flask import render_template, flash, redirect, url_for, request
 from flask.ctx import copy_current_request_context
 from flask_sqlalchemy import model
 from app import app, db
-from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm
+from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm
 from flask_login import current_user, login_user, login_required, logout_user
+from wtforms.validators import ValidationError
 from app.models import Post, User, Room
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -65,7 +66,7 @@ def login():
 
         return redirect(next_page)
 
-    return render_template('login.html', form=form, title='Humour Hub - Login')
+    return render_template('login.html', form=form, title='loungr - Login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -159,6 +160,27 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     
     return render_template('edit_profile.html', form=form, title = 'Edit Profile')
+
+@app.route('/changepassword', methods= ['GET','POST'])
+@login_required
+def changepassword():
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=current_user.username).first()
+
+        if user is None or not user.check_password(form.old_password.data):
+            return redirect(url_for('edit_profile'))
+        
+        if form.new_password_1.data == form.new_password_2.data:
+            user.set_password(form.new_password_1.data)
+            db.session.commit()
+            return redirect(url_for('edit_profile'))
+
+            
+
+    return render_template('changepassword.html', form=form)
+
 
 @app.route('/logout')
 def logout():
