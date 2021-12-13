@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
+
     <h1>Hi, {{ current_user.username }}!</h1>
     <p>You are a member of {{no_rooms}} rooms!</p>
     <p><a class="btn btn-primary" href="{{url_for('createroom')}}">Create room</a></p>
+
+</div>
     {% for room in rooms %}
     {% include '_room.html' %}
     {% endfor %}
