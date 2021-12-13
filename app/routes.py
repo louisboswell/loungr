@@ -112,8 +112,9 @@ def user(username):
 @login_required
 def room(id):
     room = Room.query.filter_by(id=id).first_or_404()
+    members = room.get_members()
 
-    return render_template('room.html', room=room)
+    return render_template('room.html', room=room, members=members)
 
 @app.before_request
 def before_request():

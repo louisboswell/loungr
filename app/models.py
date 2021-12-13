@@ -130,6 +130,17 @@ class Room(db.Model):
     def set_desc(self, desc):
         self.desc = desc
 
+    def get_members(self):
+        users = User.query.all()
+        correct = []
+
+        for user in users:
+            if self in user.rooms:
+                correct.append(user)
+        
+        return correct
+
+
 
     def __repr__(self):
         return '<Room {}>'.format(self.id)

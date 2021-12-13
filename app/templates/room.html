@@ -8,4 +8,12 @@
         <p><a class="btn btn-primary" href="/join/{{room.id}}">Join room</a></p>
         <p><a class="btn btn-danger" href="/leave/{{room.id}}">Leave room</a></p>
     </div>
+
+    <div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
+        <h2>Group Members</h2>
+    {% for member in members %}
+
+        <li style="margin-left: 10px;"><b>{{ member.username }}</b></li>
+        {% endfor %}
+    </div>
 {% endblock %}
