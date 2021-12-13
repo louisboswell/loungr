@@ -1,17 +1,24 @@
-from app import models, db
+from app import db
+from app.models import User, Room, Post
 
-user = models.User.query.all()
-user = user[0]
+def createUser(name, email, password):
+        user = User(username = name, email=email)
+        user.set_password(password)
+        db.session.add(user)
 
-room = models.Room()
-room.new_room()
+createUser("Louis", "louis@gmail.com", "password")
+createUser("Conor", "conor@gmail.com", "password")
+createUser("Jack", "jack@gmail.com", "password")
 
-room2 = models.Room()
-room2.new_room()
+users = User.query.all()
 
-user.join_room(room)
-print(user.is_member(room))
-print(user.is_member(room2))
+for user in users:
+    print (user)
+    print("follows")
 
-print(user.user_rooms())
-print(type(user.user_rooms()))
+    for follow in user.followed:
+        print(follow)
+    
+    print("\n")
+
+print(users)
