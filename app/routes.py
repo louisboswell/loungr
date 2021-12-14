@@ -97,6 +97,7 @@ def user(username):
     following = user.count_following()
     followers = user.count_followers()
     rooms = len(user.user_rooms())
+    num_posts = user.posts.count()
 
     page = request.args.get('page', 1, type=int)
     posts = user.posts.order_by(Post.timestamp.desc()).paginate(
@@ -107,7 +108,7 @@ def user(username):
         if posts.has_prev else None
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts.items,
-                           next_url=next_url, prev_url=prev_url, form=form, following=following,followers=followers, rooms = rooms)
+                           next_url=next_url, prev_url=prev_url, form=form, following=following,followers=followers, rooms = rooms, num_posts=num_posts)
 
 @app.route('/room/<id>')
 @login_required
