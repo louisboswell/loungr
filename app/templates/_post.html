@@ -20,7 +20,13 @@
 
                 
                 <div style="margin-left: auto; margin-right: 0px;">
-                <a class="btn btn-secondary" style="size: 10px;"href="{{ url_for('changepassword')}}">🤍 10</a>
+
+                {% if current_user.has_liked_post(post) %}
+                <a class="btn btn-danger" href="{{ url_for('like_action', post_id=post.id, action='unlike') }}">🤍{{ post.likes.count() }}</a>
+                {% else %}
+                <a class="btn btn-secondary" href="{{ url_for('like_action', post_id=post.id, action='like') }}">🤍{{ post.likes.count() }}</a>
+                {% endif %}
+
                 <a class="btn btn-secondary" href="{{ url_for('changepassword')}}">💬</a>
                 <a class="btn btn-secondary" href="{{ url_for('changepassword')}}">❕</a>
                 </div>
