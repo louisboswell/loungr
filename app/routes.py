@@ -2,10 +2,10 @@ from flask import render_template, flash, redirect, url_for, request
 from flask.ctx import copy_current_request_context
 from flask_sqlalchemy import model
 from app import app, db
-from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm, ReportForm
+from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm, ReportForm, ReplyForm
 from flask_login import current_user, login_user, login_required, logout_user
 from wtforms.validators import ValidationError
-from app.models import Post, User, Room
+from app.models import Post, User, Room, Reply
 from werkzeug.urls import url_parse
 from datetime import datetime
 
@@ -45,12 +45,20 @@ def explore():
     return render_template("index.html", title='Explore', posts=posts.items,
                           next_url=next_url, prev_url=prev_url)
 
-@app.route('/post/<id>')
+@app.route('/post/<id>', methods=['GET', 'POST'])
 @login_required
 def post(id):
     post = Post.query.filter_by(id=id).first_or_404()
+    form = ReplyForm()
+    """
+    if form.validate_on_submit():
+        reply = Reply(body=form.body.data, user_id=current_user, post_id=post.id)
+        db.session.add(reply)
+        db.session.commit()
+        return redirect(url_for('index'))
+    """
 
-    return render_template('post.html', post=post)
+    return render_template('post.html', post=post, form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

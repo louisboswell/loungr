@@ -3,6 +3,17 @@
 {% block content %}
 <div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
     {% include "_post.html" %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            <textarea class="form-control" id="{{ form.body(rows = 2) }}</textarea>
+            {% for error in form.body.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <input type="submit" class="btn btn-primary btn-lg" value="Reply"></input>
+    </form>
 </div>
+
 
 {% endblock %}

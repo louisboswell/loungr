@@ -68,3 +68,7 @@ class EmptyForm(FlaskForm):
 class ReportForm(FlaskForm):
     report_desc = TextAreaField('Report Reason', validators=[DataRequired(), Length(min=20, max=300)], render_kw={"placeholder": "Enter reason for report"})
     submit = SubmitField('Submit Report')
+
+class ReplyForm(FlaskForm):
+    body = TextAreaField('Reply Body', validators=[DataRequired(), Length(min=1, max=50)], render_kw={"placeholder": "Enter reply"})
+    submit = SubmitField('Submit Reply')
