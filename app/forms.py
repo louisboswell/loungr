@@ -64,3 +64,7 @@ class CreateRoomForm(FlaskForm):
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
+
+class ReportForm(FlaskForm):
+    report_desc = TextAreaField('Report Reason', validators=[DataRequired(), Length(min=20, max=300)], render_kw={"placeholder": "Enter reason for report"})
+    submit = SubmitField('Submit Report')

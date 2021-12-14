@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask.ctx import copy_current_request_context
 from flask_sqlalchemy import model
 from app import app, db
-from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm
+from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm, ReportForm
 from flask_login import current_user, login_user, login_required, logout_user
 from wtforms.validators import ValidationError
 from app.models import Post, User, Room
@@ -285,3 +285,14 @@ def like_action(post_id, action):
         current_user.unlike_post(post)
         db.session.commit()
     return redirect(request.referrer)
+
+@app.route('/report/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def report_action(post_id):
+    post = Post.query.filter_by(id = post_id).first_or_404()
+    form = ReportForm()
+
+    if form.validate_on_submit():
+        return redirect(url_for('index'))
+
+    return render_template('report.html', post=post, form=form)

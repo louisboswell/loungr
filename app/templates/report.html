@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
+
+    <h1>Submit Report for Post {{ post.id }}</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.report_desc.label }}
+            <textarea class="form-control" id="{{ form.report_desc(rows = 4) }}</textarea>            <br>
+            {% for error in form.report_desc.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Submit Report"></input>
+    </form>
+    </div>
+{% endblock %}
