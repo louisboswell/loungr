@@ -42,10 +42,7 @@
             <div class = "container-fluid p-3 bg-dark text-white" style="border-radius: 15px;">
             <b>Your Rooms</b>
             {% for room in rooms %}
-              <div class="container-fluid bg-light text-dark" style="border-radius:5px">
-                <b>{{ room.name }}</b><br>
-                <p>{{ room.desc }}</p>
-              </div>
+              {% include '_room.html' %}
             {% endfor %}
             </div>
           </div>
