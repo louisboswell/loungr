@@ -27,7 +27,7 @@
                 <a class="btn btn-secondary" href="{{ url_for('like_action', post_id=post.id, action='like') }}">🤍{{ post.likes.count() }}</a>
                 {% endif %}
 
-                <a class="btn btn-secondary" href="{{ url_for('changepassword')}}">💬</a>
+                <a class="btn btn-secondary" href="/post/{{post.id}}">💬</a>
                 <a class="btn btn-secondary" href="{{ url_for('report_action', post_id=post.id) }}">❕</a>
                 </div>
             </div>

@@ -45,6 +45,13 @@ def explore():
     return render_template("index.html", title='Explore', posts=posts.items,
                           next_url=next_url, prev_url=prev_url)
 
+@app.route('/post/<id>')
+@login_required
+def post(id):
+    post = Post.query.filter_by(id=id).first_or_404()
+
+    return render_template('post.html', post=post)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
