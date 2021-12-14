@@ -72,3 +72,6 @@ class ReportForm(FlaskForm):
 class ReplyForm(FlaskForm):
     body = TextAreaField('Reply Body', validators=[DataRequired(), Length(min=1, max=50)], render_kw={"placeholder": "Enter reply"})
     submit = SubmitField('Submit Reply')
+
+class SearchForm(FlaskForm):
+    username = TextField('Search User', render_kw={"placeholder": "Username"})

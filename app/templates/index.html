@@ -3,7 +3,6 @@
 {% block content %}
 <div class="container-fluid text-center bg-secondary">    
         <div class="row content">
-                {% if form %}
           <div class="col-sm-2 p-2 my-3 text-white" style="border-radius: 15px; height: 285px">
             <div class = "container-fluid p-3 bg-dark text-white" style="border-radius: 15px;">
             <b>Hi, {{ current_user.username }}!</b>
@@ -19,10 +18,6 @@
                   <input type="submit" class="btn btn-primary btn-lg btn-block" value="Post"></input>
               </form>
             </div>
-              {% else%}
-              <div class="col-sm p-2 my-3 bg-secondary text-white" style="border-radius: 15px; height: 285px">
-                <b>Explore the best of loungr!</b>
-              {% endif %}
           </div>
           <div class="col-sm-8 text-left"> 
             {% for post in posts %}
@@ -41,9 +36,14 @@
           <div class="col-sm-2 p-2 my-3 text-white" style="border-radius: 15px; height: 285px">
             <div class = "container-fluid p-3 bg-dark text-white" style="border-radius: 15px;">
             <b>Your Rooms</b>
+
+            <div class = "container-fluid p-3 bg-secondary text-white" style="border-radius: 15px;">
             {% for room in rooms %}
-              {% include '_room.html' %}
+           
+                <a style="color: whitesmoke; font-weight: bold;" href="/room/{{room.id}}">{{ room.name }}</a>
             {% endfor %}
+          </div>
+
             </div>
           </div>
         </div>

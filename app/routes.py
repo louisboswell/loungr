@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask.ctx import copy_current_request_context
 from flask_sqlalchemy import model
 from app import app, db
-from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm, ReportForm, ReplyForm
+from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm, ReportForm, ReplyForm, SearchForm
 from flask_login import current_user, login_user, login_required, logout_user
 from wtforms.validators import ValidationError
 from app.models import Post, User, Room, Reply
@@ -13,7 +13,6 @@ from datetime import datetime
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user)
@@ -34,7 +33,18 @@ def index():
                            prev_url=prev_url, rooms = rooms)
 
 @app.route('/explore')
+@login_required
 def explore():
+    
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('index'))
+    rooms = current_user.user_rooms()
+
+
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
@@ -43,7 +53,7 @@ def explore():
     prev_url = url_for('explore', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template("index.html", title='Explore', posts=posts.items,
-                          next_url=next_url, prev_url=prev_url)
+                          next_url=next_url, prev_url=prev_url, form=form, rooms=rooms)
 
 @app.route('/post/<id>', methods=['GET', 'POST'])
 @login_required
@@ -56,7 +66,7 @@ def post(id):
         db.session.add(reply)
         db.session.commit()
         return redirect(url_for('index'))
-    """
+    """ 
 
     return render_template('post.html', post=post, form=form)
 
