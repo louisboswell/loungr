@@ -56,6 +56,15 @@ class User(UserMixin, db.Model):
             like = PostLike(user_id=self.id, post_id=post.id)
             db.session.add(like)
 
+    def no_likes(self):
+        ps = self.posts
+        l = 0
+
+        for p in ps:
+            l += p.likes.count()
+        
+        return l
+
     def unlike_post(self, post):
         if self.has_liked_post(post):
             PostLike.query.filter_by(

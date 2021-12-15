@@ -1,13 +1,19 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask.ctx import copy_current_request_context
 from flask_sqlalchemy import model
-from app import app, db
+from app import app, db, admin
 from app.forms import CreateRoomForm, LoginForm, PostForm, RegistrationForm, EditProfileForm, EmptyForm, ChangePasswordForm, ReportForm, ReplyForm, SearchForm
 from flask_login import current_user, login_user, login_required, logout_user
 from wtforms.validators import ValidationError
 from app.models import Post, User, Room, Reply
 from werkzeug.urls import url_parse
 from datetime import datetime
+from flask_admin.contrib.sqla import ModelView
+
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Post, db.session))
+admin.add_view(ModelView(Room, db.session))
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -134,6 +140,14 @@ def user(username):
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts.items,
                            next_url=next_url, prev_url=prev_url, form=form, following=following,followers=followers, rooms = rooms, num_posts=num_posts)
+
+@app.route('/leaderboard')
+@login_required
+def leaderboard():
+    users = User.query.all()
+    no_users = len(users)
+
+    return render_template('leaderboard.html', users=users, no_users=no_users)
 
 @app.route('/room/<id>')
 @login_required
