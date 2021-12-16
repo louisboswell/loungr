@@ -1,22 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
 
     <h1>Hi, {{ current_user.username }}!</h1>
     <p>There are {{ no_users }} users on loungr!</p>
 
-    <div class="form-outline">
-        <input type="search" id="form1" class="form-control" placeholder="Type query"
-        aria-label="Search" />
-      </div>
+    <input type="text" class="live-search-box" placeholder="search here" />
+
+    <ul class="live-search-list" type="None">
+        {% for user in users %}
+        <li>
+
+        <!---->
+        <div class="container p-3 my-3 bg-secondary text-white border-0" style="border-radius: 15px">
+            <div class="row">
+                <div class="col-sm-1">
+                <img class= "border border-white"style="border-radius: 25px" src="{{ user.avatar(70) }}">
+                </div>
+
+                <div class="col-6">
+                <a href="{{ url_for('user', username=user.username) }}"  style="font-weight: bold; color: whitesmoke; font-size: 50px;">{{ user.username }}</a>
+                </div>
+
+                <div class="col-sm-1 p-1 my-1">
+                    <div class="box-layout-text text-right bg-light p-3  text-dark" style= "border-radius: 10px;">
+                        <h1>{{ user.no_likes() }}</h1>
+                    <span>Likes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+    </ul>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+  
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+  
+    $('.live-search-list li').each(function(){
+        $(this).attr('data-search-term', $(this).text().toLowerCase());
+        });
+        
+            $('.live-search-box').on('keyup', function(){
+  
+    var searchTerm = $(this).val().toLowerCase();
+        $('.live-search-list li').each(function(){
+            if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });  
+});
+</script>
 
 </div>
-    {% for user in users %}
-        <div class="container p-3 my-3 bg-dark text-white border-0" style="border-radius: 15px">
-            <h1>{{ user.username }}</h1>
-            <p>{{ user.no_likes() }}</p>
-        </div>
-    {% endfor %}
+
 {% endblock %}

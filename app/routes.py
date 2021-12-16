@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask.ctx import copy_current_request_context
 from flask_sqlalchemy import model
 from app import app, db, admin
@@ -119,7 +119,7 @@ def user(username):
     return render_template('user.html', user=user, posts=posts.items,
                            next_url=next_url, prev_url=prev_url, form=form, following=following,followers=followers, rooms = rooms, num_posts=num_posts, title=user.username)
 
-@app.route('/leaderboard')
+@app.route('/leaderboard', methods=['GET', 'POST'])
 @login_required
 def leaderboard():
     users = User.query.all()
@@ -132,6 +132,7 @@ def leaderboard():
 def room(id):
     room = Room.query.filter_by(id=id).first_or_404()
     members = room.get_members()
+
 
     return render_template('room.html', room=room, members=members, user=current_user, title=room.name)
 
