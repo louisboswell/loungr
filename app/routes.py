@@ -75,7 +75,7 @@ def login():
 
         return redirect(next_page)
 
-    return render_template('login.html', form=form, title='loungr - Login')
+    return render_template('login.html', form=form, title='Login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -96,7 +96,7 @@ def register():
         db.session.commit()
 
         return redirect(url_for('login'))
-    return render_template('register.html', form=form, title = 'Humour Hub - Register')
+    return render_template('register.html', form=form, title = 'Register')
 
 @app.route('/user/<username>')
 @login_required
@@ -117,7 +117,7 @@ def user(username):
         if posts.has_prev else None
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts.items,
-                           next_url=next_url, prev_url=prev_url, form=form, following=following,followers=followers, rooms = rooms, num_posts=num_posts)
+                           next_url=next_url, prev_url=prev_url, form=form, following=following,followers=followers, rooms = rooms, num_posts=num_posts, title=user.username)
 
 @app.route('/leaderboard')
 @login_required
@@ -125,7 +125,7 @@ def leaderboard():
     users = User.query.all()
     no_users = len(users)
 
-    return render_template('leaderboard.html', users=users, no_users=no_users)
+    return render_template('leaderboard.html', users=users, no_users=no_users, title='Leaderboard')
 
 @app.route('/room/<id>')
 @login_required
@@ -133,7 +133,7 @@ def room(id):
     room = Room.query.filter_by(id=id).first_or_404()
     members = room.get_members()
 
-    return render_template('room.html', room=room, members=members, user=current_user)
+    return render_template('room.html', room=room, members=members, user=current_user, title=room.name)
 
 @app.route('/deleteroom/<id>')
 @login_required
@@ -153,7 +153,7 @@ def deleteroom(id):
         db.session.commit()
 
 
-    return render_template('deleteroom.html', room=room, form=form)
+    return render_template('deleteroom.html', room=room, form=form, title='Delete room?')
 
 @app.before_request
 def before_request():
@@ -197,7 +197,7 @@ def changepassword():
 
             
 
-    return render_template('changepassword.html', form=form)
+    return render_template('changepassword.html', form=form, title='Change password')
 
 
 @app.route('/logout')
@@ -248,7 +248,7 @@ def unfollow(username):
 def rooms():
     rooms = current_user.user_rooms()
     no_rooms = len(rooms)
-    return render_template('rooms.html', rooms = rooms, no_rooms = no_rooms)
+    return render_template('rooms.html', rooms = rooms, no_rooms = no_rooms, title='Your Rooms')
 
 @app.route('/createroom', methods = ['GET', 'POST'])
 @login_required
@@ -290,7 +290,7 @@ def allrooms():
 
     no_user_rooms = len(current_user.user_rooms())
     rooms = current_user.user_rooms()
-    return render_template('allrooms.html', rooms = rooms, no_rooms= no_rooms, no_user_rooms=no_user_rooms, all_rooms =all_rooms)
+    return render_template('allrooms.html', rooms = rooms, no_rooms= no_rooms, no_user_rooms=no_user_rooms, all_rooms =all_rooms, title='All Rooms')
 
 @app.route('/like/<int:post_id>/<action>')
 @login_required
@@ -313,4 +313,4 @@ def report_action(post_id):
     if form.validate_on_submit():
         return redirect(url_for('index'))
 
-    return render_template('report.html', post=post, form=form)
+    return render_template('report.html', post=post, form=form, title="Report Post")
