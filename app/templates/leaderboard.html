@@ -23,12 +23,34 @@
                 <a href="{{ url_for('user', username=user.username) }}"  style="font-weight: bold; color: whitesmoke; font-size: 50px;">{{ user.username }}</a>
                 </div>
 
-                <div class="col-sm-1 p-1 my-1">
+                <div class="col-sm p-1 my-1">
                     <div class="box-layout-text text-right bg-light p-3  text-dark" style= "border-radius: 10px;">
                         <h1>{{ user.no_likes() }}</h1>
                     <span>Likes</span>
                     </div>
                 </div>
+                
+                <div class="col-sm p-1 my-1">
+                    <div class="box-layout-text text-right bg-light p-3  text-dark" style= "border-radius: 10px;">
+                        <h1>{{ user.count_followers() }}</h1>
+                    <span>Followers</span>
+                    </div>
+                </div>
+                
+                <div class="col-sm p-1 my-1">
+                    <div class="box-layout-text text-right bg-light p-3  text-dark" style= "border-radius: 10px;">
+                        <h1>{{ user.count_following() }}</h1>
+                    <span>Following</span>
+                    </div>
+                </div>
+
+                <div class="col-sm p-1 my-1">
+                    <div class="box-layout-text text-right bg-light p-3  text-dark" style= "border-radius: 10px;">
+                        <h1>{{ user.user_rooms()|length }}</h1>
+                    <span>Rooms</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </li>
